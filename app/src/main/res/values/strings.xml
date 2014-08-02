@@ -8,5 +8,6 @@
     <string name="temp_f">212º</string>
     <string name="temp_c">100º</string>
     <string name="refresh">Refresh</string>
+    <string name="title_activity_detail">DetailActivity</string>
 
 </resources>
