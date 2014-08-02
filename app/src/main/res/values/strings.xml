@@ -7,5 +7,6 @@
     <string name="today_date">Today, July 08</string>
     <string name="temp_f">212º</string>
     <string name="temp_c">100º</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
