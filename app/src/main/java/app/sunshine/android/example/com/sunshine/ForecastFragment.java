@@ -1,9 +1,11 @@
 package app.sunshine.android.example.com.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,25 +48,22 @@ public class ForecastFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        ArrayList<String> data = new ArrayList<String>(){{
-            add("Today - Sunny 88º");
-            add("Tomorrow - Sunny 110º");
-            add("Saturday - Hot 115º");
-            add("Sunday - Sunny 88º");
-            add("Monday - Sunny 110º");
-            add("Tuesday - Hot 115º");
-        }};
-
         FORECAST_ARRAY_ADAPTER = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
-                data);
+                new ArrayList<String>());
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(FORECAST_ARRAY_ADAPTER);
@@ -92,12 +91,19 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                FetchWeatherTask task = new FetchWeatherTask();
-                task.execute("94043");
+                updateWeather();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void updateWeather() {
+        FetchWeatherTask task = new FetchWeatherTask();
+//                String zipcode = getActivity().getPreferences(R.xml.pref_general).getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String zipcode = prefs.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+        task.execute(zipcode);
     }
 
     @Override
