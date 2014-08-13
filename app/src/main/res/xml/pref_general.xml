@@ -10,4 +10,14 @@
         android:singleLine="true"
         android:maxLines="1" />
 
+    <ListPreference
+        android:key="@string/pref_temperature_key"
+        android:title="@string/pref_temperature_title"
+        android:dialogTitle="@string/pref_temperature_dialog_title"
+        android:summary="%s"
+        android:defaultValue="@string/pref_temperature_default"
+        android:entries="@array/pref_temperature_entries"
+        android:entryValues="@array/pref_temperature_values"
+        />
+
 </PreferenceScreen>

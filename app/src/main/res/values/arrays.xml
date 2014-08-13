@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_temperature_entries">
+        <item>Imperial (ºF)</item>
+        <item>Metric (ºC)</item>
+    </string-array>
+    <string-array name="pref_temperature_values">
+        <item>f</item>
+        <item>c</item>
+    </string-array>
+</resources>

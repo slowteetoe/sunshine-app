@@ -12,5 +12,9 @@
     <string name="pref_location_label">Location</string>
     <string name="pref_location_key" translatable="false">location</string>
     <string name="pref_location_default" translatable="false">89031</string>
+    <string name="pref_temperature_key">temperature_key</string>
+    <string name="pref_temperature_title">Temperature units</string>
+    <string name="pref_temperature_default">F</string>
+    <string name="pref_temperature_dialog_title">Choose temperature units</string>
 
 </resources>

@@ -103,7 +103,8 @@ public class ForecastFragment extends Fragment {
 //                String zipcode = getActivity().getPreferences(R.xml.pref_general).getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String zipcode = prefs.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
-        task.execute(zipcode);
+        String temperatureUnits = prefs.getString(getString(R.string.pref_temperature_key),getString(R.string.pref_temperature_default));
+        task.execute(zipcode, temperatureUnits);
     }
 
     @Override
@@ -129,6 +130,7 @@ public class ForecastFragment extends Fragment {
         @Override
         protected String[] doInBackground(String... params) {
             String postCode = params[0];
+            String temperatureUnits = params[1];
 
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
@@ -198,7 +200,7 @@ public class ForecastFragment extends Fragment {
                 }
             }
             try {
-                return getWeatherDataFromJson(forecastJsonStr, numDays);
+                return getWeatherDataFromJson(forecastJsonStr, numDays, temperatureUnits);
             } catch (JSONException e){
                 Log.e(LOG_TAG, e.toString(), e);
                 Log.e(LOG_TAG, forecastJsonStr);
@@ -225,7 +227,7 @@ public class ForecastFragment extends Fragment {
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
 
-            String highLowStr = roundedHigh + "/" + roundedLow;
+            String highLowStr = roundedHigh + "º/" + roundedLow + "º";
             return highLowStr;
         }
 
@@ -236,7 +238,7 @@ public class ForecastFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+        private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays, String temperatureUnits)
                 throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
@@ -277,11 +279,25 @@ public class ForecastFragment extends Fragment {
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
 
+                Log.d(LOG_TAG, "Displaying temperature in deg " + temperatureUnits);
+
+                if("F".equalsIgnoreCase(temperatureUnits)){
+                    high = convertToFahrenheit(high);
+                    low = convertToFahrenheit(low);
+                }
+
                 highAndLow = formatHighLows(high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
             return resultStrs;
         }
+
+        private double convertToFahrenheit(double c) {
+            double f = ((9.0/5.0) * c) + 32.0;
+            Log.d(LOG_TAG, c + " ºc -> " + f + " ºf");
+            return f;
+        }
     }
+
 }
