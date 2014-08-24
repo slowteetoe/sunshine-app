@@ -72,15 +72,16 @@ public class ForecastFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
-                String forecast = FORECAST_ARRAY_ADAPTER.getItem(position);
+
+                        Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
+                        String forecast = FORECAST_ARRAY_ADAPTER.getItem(position);
 
 //                Toast.makeText(getActivity(), forecast, Toast.LENGTH_SHORT).show();
 
-                detailIntent.putExtra(Intent.EXTRA_TEXT, forecast);
-                startActivity(detailIntent);
-            }
+                        detailIntent.putExtra(Intent.EXTRA_TEXT, forecast);
+                        startActivity(detailIntent);
 
+            }
 
         });
 
@@ -93,6 +94,16 @@ public class ForecastFragment extends Fragment {
             case R.id.action_refresh:
                 updateWeather();
                 return true;
+            case R.id.action_map:
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                String zipcode = getZipcodeFromPrefs();
+                Uri uri = Uri.parse("geo:0,0?q=" + zipcode);
+                intent.setData(uri);
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -100,11 +111,14 @@ public class ForecastFragment extends Fragment {
 
     private void updateWeather() {
         FetchWeatherTask task = new FetchWeatherTask();
-//                String zipcode = getActivity().getPreferences(R.xml.pref_general).getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String zipcode = prefs.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
         String temperatureUnits = prefs.getString(getString(R.string.pref_temperature_key),getString(R.string.pref_temperature_default));
-        task.execute(zipcode, temperatureUnits);
+        task.execute(getZipcodeFromPrefs(), temperatureUnits);
+    }
+
+    private String getZipcodeFromPrefs(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        return prefs.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
     }
 
     @Override
