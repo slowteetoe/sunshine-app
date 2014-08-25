@@ -3,11 +3,14 @@ package app.sunshine.android.example.com.sunshine;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    public static final String LOG_TAG = "LIFECYCLE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,4 +44,39 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStart() {
+        Log.d(LOG_TAG, "Just called onStart()");
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(LOG_TAG, "Just called onPause()");
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(LOG_TAG, "Just called onResume()");
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(LOG_TAG, "Just called onDestroy()");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(LOG_TAG, "Just called onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.d(LOG_TAG, "Just called onRestart()");
+        super.onRestart();
+    }
 }
