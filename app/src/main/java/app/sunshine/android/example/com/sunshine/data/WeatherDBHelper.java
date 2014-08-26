@@ -13,8 +13,8 @@ import app.sunshine.android.example.com.sunshine.data.WeatherContract.WeatherEnt
  */
 public class WeatherDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "weather.db";
+    protected static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "weather.db";
 
     public WeatherDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
